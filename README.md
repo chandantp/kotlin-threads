@@ -15,7 +15,7 @@ $ ./gradlew clean build    ### First build the jar
 ```
 
 ```shell script
-$ java -jar build/libs/kotlin-starter-1.0-SNAPSHOT.jar 
+$ java -jar build/libs/kotlin-threads-1.0-SNAPSHOT.jar 
 Hello!
 ```
 
