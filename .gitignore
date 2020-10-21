@@ -1,0 +1,7 @@
+# Intellij metadata
+.idea/
+*.iml
+
+# Build
+build/
+.gradle/

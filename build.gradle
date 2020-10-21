@@ -1,0 +1,58 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+}
+
+group 'com.starter'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'application'
+mainClassName = 'com.starter.AppKt'
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    testCompile 'org.spekframework.spek2:spek-dsl-jvm:2.0.9'
+    testCompile 'org.spekframework.spek2:spek-dsl-metadata:2.0.9'
+    testCompile 'org.spekframework.spek2:spek-runner-junit5:2.0.9'
+    testCompile 'com.natpryce:hamkrest:1.7.0.3'
+
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType(Test) {
+    outputs.upToDateWhen { false }
+
+    useJUnitPlatform {
+        includeEngines 'spek2'
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+
+        showExceptions true
+        showStackTraces true
+        showCauses true
+        exceptionFormat "full"
+    }
+
+    afterSuite { desc, result ->
+        if (!desc.parent) { // will match the outermost suite
+            println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped)"
+        }
+    }
+}
+
+jar {
+    manifest { attributes 'Main-Class': 'com.starter.AppKt' }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
